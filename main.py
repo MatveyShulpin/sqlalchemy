@@ -12,6 +12,7 @@ from forms.comment import CommentForm
 
 from forms.register import RegisterForm
 from forms.login import LoginForm
+from forms.news_form import NewsForm
 
 app = Flask(__name__)
 api = Api(app)
@@ -104,11 +105,21 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
+@app.route('/create_news', methods=['GET', 'POST'])
+def create_news():
+    form = NewsForm()
+    if form.validate_on_submit():
+        form = NewsForm()
+    return render_template("news_form.html", form=form)
+
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect("/")
+
 
 def abort_if_news_not_found(news_id):
     session = db_session.create_session()
